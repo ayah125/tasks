@@ -11,16 +11,16 @@
 import 'package:get_it/get_it.dart' as _i174;
 import 'package:injectable/injectable.dart' as _i526;
 
-import '../data/contracts/auth/AuthOfflineDataSource.dart' as _i123;
-import '../data/contracts/auth/AuthOnlineDataSource.dart' as _i7;
-import '../data/contracts/core/ApiManager.dart' as _i345;
-import '../data/datasource/auth/authdatasource.dart' as _i133;
-import '../data/datasource/auth/AuthOfflineDatasourceImpl.dart' as _i655;
-import '../data/datasource/auth/AuthOnlineDatasourceImpl.dart' as _i133;
-import '../data/repsitory/auth/AuthRepoImpl.dart' as _i931;
-import '../domain/repository/AuthRepository.dart' as _i722;
-import '../domain/usecase/authusecase.dart' as _i109;
-import '../presentation/cubit/cubit/auth_cubit.dart' as _i765;
+import '../features/authFeature/data/contracts/core/ApiManager.dart' as _i915;
+import '../features/authFeature/data/datasource/auth/authdatasource.dart'
+    as _i354;
+import '../features/authFeature/data/datasource/auth/authDataSourceImpl.dart'
+    as _i198;
+import '../features/authFeature/data/repsitory/auth/AuthRepoImpl.dart' as _i2;
+import '../features/authFeature/domain/repository/AuthRepository.dart' as _i638;
+import '../features/authFeature/domain/usecase/authusecase.dart' as _i960;
+import '../features/authFeature/presentation/cubit/cubit/auth_cubit.dart'
+    as _i840;
 
 extension GetItInjectableX on _i174.GetIt {
 // initializes the registration of main-scope dependencies inside of GetIt
@@ -33,16 +33,14 @@ extension GetItInjectableX on _i174.GetIt {
       environment,
       environmentFilter,
     );
-    gh.lazySingleton<_i345.ApiManager>(() => _i345.ApiManager());
-    gh.factory<_i765.AuthCubit>(() => _i765.AuthCubit(gh<_i109.AuthUsecase>()));
-    gh.factory<_i123.AuthOfflineDatasource>(
-        () => _i655.AuthOfflineDatasourceImpl());
-    gh.factory<_i7.AuthOnlineDatasource>(
-        () => _i133.AuthOnlineDatasourceImpl(gh<_i345.ApiManager>()));
-    gh.factory<_i722.AuthRepository>(
-        () => _i931.AuthRepositoryImpl(gh<_i133.AuthDataSource>()));
-    gh.factory<_i109.AuthUsecase>(
-        () => _i109.AuthUsecase(authRepo: gh<_i722.AuthRepository>()));
+    gh.lazySingleton<_i915.ApiManager>(() => _i915.ApiManager());
+    gh.factory<_i354.AuthDataSource>(
+        () => _i198.AuthDataSourceImpl(gh<_i915.ApiManager>()));
+    gh.factory<_i638.AuthRepository>(
+        () => _i2.AuthRepositoryImpl(gh<_i354.AuthDataSource>()));
+    gh.factory<_i960.AuthUsecase>(
+        () => _i960.AuthUsecase(authRepo: gh<_i638.AuthRepository>()));
+    gh.factory<_i840.AuthCubit>(() => _i840.AuthCubit(gh<_i960.AuthUsecase>()));
     return this;
   }
 }
